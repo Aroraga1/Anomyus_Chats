@@ -76,7 +76,7 @@ const ChatApp = () => {
           <div 
             key={idx} 
             className={`chat-message ${msg.from === "You" ? "sent" : "received"}`}>
-            <strong>{msg.from === 'You' ? 'You' : 'UnKnown'}:   </strong> {msg.message}
+            <strong>{msg.from === 'You' ? '' : ''}   </strong> {msg.message}
           </div>
         ))}
         <div ref={chatEndRef} />
@@ -85,7 +85,7 @@ const ChatApp = () => {
       {partner ? (
         <div className="chat-input-container">
           <form onSubmit={handleSubmit}>
-            <textarea
+            <input
               className="chat-input"
               placeholder="Type your message..."
               value={chat}

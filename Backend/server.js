@@ -14,34 +14,6 @@ const io = new Server(server, {
 
 app.use(cors());  // Allow CORS
 
-// Track waiting users
-// let waitingUsers = [];
-
-// Handle connections
-// io.on('connection', (socket) => {
-//     console.log('User connected:', socket.id);
-
-//     // Check if there is already a user waiting
-//     if (waitingUsers.length > 0) {
-//         const waitingUser = waitingUsers.pop();  // Remove the first waiting user
-//         // Pair the current user with the waiting user
-//         socket.emit('paired', waitingUser);
-//         io.to(waitingUser).emit('paired', socket.id);
-//         console.log(`Paired user ${socket.id} with user ${waitingUser}`);
-//     } else {
-//         // If no users are waiting, add this user to the waiting list
-//         waitingUsers.push(socket.id);
-//         socket.emit('waiting', 'Waiting for another user to connect...');
-//         console.log(`User ${socket.id} is waiting for a partner`);
-//     }
-
-//     // Handle user disconnect
-//     socket.on('disconnect', () => {
-//         console.log('User disconnected:', socket.id);
-//         // Remove the disconnected user from the waiting list if they were waiting
-//         waitingUsers = waitingUsers.filter((userId) => userId !== socket.id);
-//     });
-// });
 let waitingUsers = [];
 var x = 0;
 
@@ -75,3 +47,56 @@ io.on("connection", (socket) => {
 server.listen(3000, () => {
     console.log('Server running on port 3000');
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Track waiting users
+// let waitingUsers = [];
+
+// Handle connections
+// io.on('connection', (socket) => {
+//     console.log('User connected:', socket.id);
+
+//     // Check if there is already a user waiting
+//     if (waitingUsers.length > 0) {
+//         const waitingUser = waitingUsers.pop();  // Remove the first waiting user
+//         // Pair the current user with the waiting user
+//         socket.emit('paired', waitingUser);
+//         io.to(waitingUser).emit('paired', socket.id);
+//         console.log(`Paired user ${socket.id} with user ${waitingUser}`);
+//     } else {
+//         // If no users are waiting, add this user to the waiting list
+//         waitingUsers.push(socket.id);
+//         socket.emit('waiting', 'Waiting for another user to connect...');
+//         console.log(`User ${socket.id} is waiting for a partner`);
+//     }
+
+//     // Handle user disconnect
+//     socket.on('disconnect', () => {
+//         console.log('User disconnected:', socket.id);
+//         // Remove the disconnected user from the waiting list if they were waiting
+//         waitingUsers = waitingUsers.filter((userId) => userId !== socket.id);
+//     });
+// });
