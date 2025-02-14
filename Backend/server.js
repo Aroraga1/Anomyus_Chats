@@ -1,76 +1,52 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
-const cors = require('cors');
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: "*",  // Allow all origins for testing
-        methods: ["GET", "POST"]
-    }
+  cors: {
+    origin: "*", // Allow all origins for testing
+    methods: ["GET", "POST"],
+  },
 });
 
-app.use(cors());  // Allow CORS
+app.use(cors()); // Allow CORS
 
 let waitingUsers = [];
 var x = 0;
 
 io.on("connection", (socket) => {
-    console.log(`User ${socket.id}-${++x} connected`);
+  console.log(`User ${socket.id}-${++x} connected`);
 
-    if (waitingUsers.length > 0) {
-        const partner = waitingUsers.pop();
-        socket.emit('paired', partner);  // Let the current user know who they are paired with
-        io.to(partner).emit('paired', socket.id);  // Let the partner know about the current user
+  if (waitingUsers.length > 0) {
+    const partner = waitingUsers.pop();
+    socket.emit("paired", partner); // Let the current user know who they are paired with
+    io.to(partner).emit("paired", socket.id); // Let the partner know about the current user
 
-        console.log(`${socket.id}-${x} connected with ${partner}-${x - 1}`);
-    } else {
-        socket.emit('waiting', 'Waiting for a new partner');
-        waitingUsers.push(socket.id);
-        console.log(`Waiting for a partner`);
-    }
+    console.log(`${socket.id}-${x} connected with ${partner}-${x - 1}`);
+  } else {
+    socket.emit("waiting", "Waiting for a new partner");
+    waitingUsers.push(socket.id);
+    console.log(`Waiting for a partner`);
+  }
 
-    // Handle the message event to forward it to the partner
-    socket.on('message', ({ message, partnerId }) => {
-        console.log(`Message from ${socket.id} to ${partnerId}: ${message}`);
-        io.to(partnerId).emit('message', { message, from: socket.id });
-    });
+  // Handle the message event to forward it to the partner
+  socket.on("message", ({ message, partnerId }) => {
+    console.log(`Message from ${socket.id} to ${partnerId}: ${message}`);
+    io.to(partnerId).emit("message", { message, from: socket.id });
+  });
 
-    socket.on('disconnect', () => {
-        console.log(`${socket.id}-${x} Disconnected!`);
-        waitingUsers = waitingUsers.filter((ids) => ids !== socket.id);
-    });
+  socket.on("disconnect", () => {
+    console.log(`${socket.id}-${x} Disconnected!`);
+    waitingUsers = waitingUsers.filter((ids) => ids !== socket.id);
+  });
 });
 
 server.listen(3000, () => {
-    console.log('Server running on port 3000');
+  console.log("Server running on port 3000");
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Track waiting users
 // let waitingUsers = [];

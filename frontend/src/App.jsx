@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
-import './ChatApp.css';  // Link to the CSS file
+import './ChatApp.css';  // Link to the updated CSS file
 
 const socket = io("http://localhost:3000");
 
@@ -57,9 +57,9 @@ const ChatApp = () => {
     e.preventDefault();
     if (chat.trim()) {
       console.log(`Sending message: ${chat} to ${partner}`);
-      setMessages((prevMessages) => [...prevMessages, { message: chat, from: "You" }]);  // Add message to self
-      socket.emit("message", { message: chat, partnerId: partner });  // Emit the message with partnerId
-      setChat("");  // Clear the input after sending
+      setMessages((prevMessages) => [...prevMessages, { message: chat, from: "You" }]);
+      socket.emit("message", { message: chat, partnerId: partner });
+      setChat("");
       scrollToBottom();
     }
   };
